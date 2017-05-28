@@ -10,16 +10,20 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 
 class Main extends PluginBase implements Listener {
-	
-	
-	public function onEnable() {
-		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-	}
-	
-	public function onDeath(PlayerDeathEvent $event) {
-		$player = $event->getPlayer();
-		$player->getLevel()->dropItem(new Vector3($player->getX(), $player->getY(), $player->getZ()), Item::get(Item::SKULL, 3, 1));
-		$player->sendMessage("You received a head!");
-	}
+    
+    
+    public function onEnable() {
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+    }
+    
+    public function onDeath(PlayerDeathEvent $event) {
+        if($event->getEntity()->getLastDamageCause() instanceof EntityDamageByEntityEvent) {
+            $killer = $event->getEntity()->getLastDamageCause()->getDamager();
+            if($killer instanceof Player) {
+                $player = $event->getPlayer();
+                $player->getLevel()->dropItem(new Vector3($player->getX(), $player->getY(), $player->getZ()), Item::get(Item::SKULL, 3, 1));
+                $killer->sendMessage("You received a head!");
+            }
+        }
+    }
 }
-	

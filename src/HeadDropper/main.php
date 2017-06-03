@@ -22,8 +22,7 @@ class Main extends PluginBase implements Listener {
             if($killer instanceof Player) {
                 $player = $event->getPlayer();
                 $player->getLevel()->dropItem(new Vector3($player->getX(), $player->getY(), $player->getZ()), Item::get(Item::SKULL, 3, 1));
-                $killer->sendMessage("You received a head!");
-                $player->addTitle("Head Received!");
+                $killer->addTitle("You received a head!");
             }
         }
     }
